@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structure des Rôles - Arma Reforger</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #d4af37;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 5px;
+        }
+        .role {
+            background: #222;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #d4af37;
+            box-shadow: 3px 3px 10px rgba(212, 175, 55, 0.5);
+            transition: 0.3s;
+            text-align: center;
+        }
+        .role:hover {
+            background: #333;
+            transform: scale(1.02);
+        }
+        .menu {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .menu button {
+            background: #d4af37;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .menu button:hover {
+            background: #b89b30;
+        }
+        .content {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+    <script>
+        function showSection(sectionId) {
+            let sections = document.querySelectorAll('.content');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>🔱 Structure des Rôles - Arma Reforger</h1>
+        <div class="menu">
+            <button onclick="showSection('etat_major')">État-Major</button>
+            <button onclick="showSection('commandement')">Commandement</button>
+            <button onclick="showSection('escouades')">Escouades</button>
+        </div>
+
+        <div id="etat_major" class="content active">
+            <h2>🏛 État-Major Général (EMG)</h2>
+            <div class="role">
+                <h3>🎖️ Commandant Suprême</h3>
+                <p><strong>Hors Gameplay :</strong> Supervise l’ensemble des opérations et définit la stratégie.</p>
+                <p><strong>En Gameplay :</strong> Coordonne les opérations de haut niveau et valide les stratégies globales.</p>
+            </div>
+            <div class="role">
+                <h3>🏅 Officiers Stratégique & Logistique</h3>
+                <p><strong>Hors Gameplay :</strong> Planifient les missions, gèrent l’équipement et les effectifs.</p>
+                <p><strong>En Gameplay :</strong> Veillent au bon déroulement des missions et interviennent en soutien stratégique.</p>
+            </div>
+        </div>
+
+        <div id="commandement" class="content">
+            <h2>🏅 Commandement des Compagnies</h2>
+            <div class="role">
+                <h3>🏅 Commandant Compagnie Alpha & Bravo</h3>
+                <p><strong>Hors Gameplay :</strong> Gèrent la structure et le bon fonctionnement de leur compagnie.</p>
+                <p><strong>En Gameplay :</strong> Supervisent les escouades et coordonnent les missions.</p>
+            </div>
+            <div class="role">
+                <h3>🎖️ Capitaines</h3>
+                <p><strong>Hors Gameplay :</strong> Encadrent les lieutenants et veillent à l’organisation des escouades.</p>
+                <p><strong>En Gameplay :</strong> Dirigent les opérations de leur compagnie sur le terrain.</p>
+            </div>
+        </div>
+
+        <div id="escouades" class="content">
+            <h2>🎖️ Escouades Alpha 1 & Bravo 1</h2>
+            <div class="role">
+                <h3>🎖️ Lieutenant Alpha 1 & Bravo 1</h3>
+                <p><strong>Hors Gameplay :</strong> Commandent l’escouade en dehors des missions et organisent les entraînements.</p>
+                <p><strong>En Gameplay :</strong> Prennent les décisions tactiques et dirigent l’escouade sur le terrain.</p>
+            </div>
+            <div class="role">
+                <h3>⚔️ Sergent Alpha 1 & Bravo 1</h3>
+                <p><strong>Hors Gameplay :</strong> Encadrent les soldats et assurent leur formation.</p>
+                <p><strong>En Gameplay :</strong> Appliquent les ordres du Lieutenant et guident les soldats.</p>
+            </div>
+            <div class="role">
+                <h3>🛡️ Caporal Alpha 1 & Bravo 1</h3>
+                <p><strong>Hors Gameplay :</strong> Aident le Sergent et encadrent les recrues.</p>
+                <p><strong>En Gameplay :</strong> Soutiennent les soldats et exécutent des tâches tactiques.</p>
+            </div>
+            <div class="role">
+                <h3>🎖️ Soldats & Recrues</h3>
+                <p><strong>Hors Gameplay :</strong> Participent aux entraînements et s’intègrent progressivement.</p>
+                <p><strong>En Gameplay :</strong> Exécutent les ordres et participent activement aux missions.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
