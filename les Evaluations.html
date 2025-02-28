@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procédure d'Évaluation et de Promotion des Soldats</title>
+    <style>
+        :root {
+            --military-dark: #1a2c38;
+            --military-medium: #2c4755;
+            --military-light: #3d6277;
+            --accent-color: #bf9b30;
+            --success-color: #4a8c6f;
+            --text-light: #f5f5f5;
+            --text-dark: #333;
+            --bg-light: #f0f2f5;
+            --card-bg: #fff;
+            --phase-border: #5d7a8c;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232c4755' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--military-dark);
+            color: var(--text-light);
+            padding: 30px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(191, 155, 48, 0.2) 0%, transparent 100%);
+            z-index: 1;
+        }
+        
+        header .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .military-emblem {
+            width: 80px;
+            height: 80px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            color: var(--military-dark);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        main {
+            padding: 40px 0;
+        }
+        
+        .principle {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--military-medium);
+        }
+        
+        .principle h2 {
+            color: var(--military-dark);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 12px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .principle h2::before {
+            content: "📜";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .principle ul {
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        
+        .principle ul li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .principle ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .rank-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .rank-tab {
+            flex: 1;
+            min-width: 160px;
+            background-color: var(--military-medium);
+            color: var(--text-light);
+            padding: 12px 15px;
+            text-align: center;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .rank-tab:hover {
+            background-color: var(--military-light);
+        }
+        
+        .rank-tab.active {
+            background-color: var(--card-bg);
+            color: var(--military-dark);
+            border-bottom: 3px solid var(--accent-color);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .rank-icon {
+            background-color: var(--accent-color);
+            color: var(--military-dark);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .rank-content-wrapper {
+            background-color: var(--card-bg);
+            border-radius: 0 0 8px 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rank-content {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .rank-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .evaluators {
+            background-color: var(--military-light);
+            color: var(--text-light);
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .evaluators::before {
+            content: "🎖";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .phase {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: rgba(45, 71, 85, 0.05);
+            border-radius: 6px;
+            border-left: 4px solid var(--phase-border);
+        }
+        
+        .phase h4 {
+            color: var(--military-dark);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .phase h4::before {
+            content: "🔹";
+            margin-right: 10px;
+        }
+        
+        .phase ul {
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        
+        .phase ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .phase ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .validation {
+            background-color: rgba(74, 140, 111, 0.2);
+            color: var(--success-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-weight: 600;
+            border-left: 4px solid var(--success-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .validation::before {
+            content: "✅";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .summary {
+            background-color: var(--military-dark);
+            color: var(--text-light);
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .summary h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .summary h3::before {
+            content: "✅";
+            margin-right: 10px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        
+        .summary-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .summary-item:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .summary-item strong {
+            color: var(--accent-color);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        
+        footer {
+            background-color: var(--military-dark);
+            color: var(--text-light);
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            border-top: 5px solid var(--accent-color);
+        }
+        
+        footer p {
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        footer p::before {
+            content: "📢";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .rank-tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .rank-tab {
+                width: 100%;
+                border-radius: 6px;
+            }
+            
+            .rank-content-wrapper {
+                border-radius: 8px;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header .container {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+        }
+
+        /* Badge decoration */
+        .military-badge {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: var(--accent-color);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        /* Progress indicator */
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .progress-indicator::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--military-light);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            background-color: var(--military-medium);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active {
+            background-color: var(--accent-color);
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(191, 155, 48, 0.5);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(191, 155, 48, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(191, 155, 48, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(191, 155, 48, 0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📜 Procédure d'Évaluation et de Promotion des Soldats</h1>
+            <div class="military-emblem">⭐</div>
+        </div>
+        <div class="military-badge"></div>
+    </header>
+    
+    <main class="container">
+        <section class="principle">
+            <h2>Principe Général</h2>
+            <p>Chaque montée en grade repose sur une évaluation par les deux grades supérieurs.</p>
+            <ul>
+                <li>Soldat → Caporal : Évalué par un Sergent et validé par un Sergent-Chef.</li>
+                <li>Caporal → Sergent : Évalué par un Sergent-Chef et validé par un Lieutenant.</li>
+                <li>Sergent → Sergent-Chef : Évalué par un Lieutenant et validé par un Capitaine.</li>
+                <li>Sergent-Chef → Lieutenant : Évalué par un Capitaine et validé par un Commandant.</li>
+                <li>Lieutenant → Capitaine : Évalué par un Commandant et validé par l'État-Major.</li>
+            </ul>
+        </section>
+        
+        <div class="progress-indicator">
+            <div class="progress-step active" data-step="1">1</div>
+            <div class="progress-step" data-step="2">2</div>
+            <div class="progress-step" data-step="3">3</div>
+            <div class="progress-step" data-step="4">4</div>
+            <div class="progress-step" data-step="5">5</div>
+        </div>
+        
+        <div class="rank-tabs">
+            <div class="rank-tab active" data-tab="1">
+                <span>Soldat → Caporal</span>
+                <div class="rank-icon">1</div>
+            </div>
+            <div class="rank-tab" data-tab="2">
+                <span>Caporal → Sergent</span>
+                <div class="rank-icon">2</div>
+            </div>
+            <div class="rank-tab" data-tab="3">
+                <span>Sergent → Sergent-Chef</span>
+                <div class="rank-icon">3</div>
+            </div>
+            <div class="rank-tab" data-tab="4">
+                <span>Sergent-Chef → Lieutenant</span>
+                <div class="rank-icon">4</div>
+            </div>
+            <div class="rank-tab" data-tab="5">
+                <span>Lieutenant → Capitaine</span>
+                <div class="rank-icon">5</div>
+            </div>
+        </div>
+        
+        <div class="rank-content-wrapper">
+            <!-- Soldat à Caporal -->
+            <div class="rank-content active" data-content="1">
+                <div class="evaluators">
+                    Évaluateurs : Sergent + Sergent-Chef
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 1 : Observation Générale (2 semaines minimum)</h4>
+                    <ul>
+                        <li>Participation active aux missions et entraînements.</li>
+                        <li>Intégration dans l'escouade et respect des consignes.</li>
+                        <li>Compréhension des bases tactiques et esprit d'équipe.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 2 : Première Évaluation</h4>
+                    <ul>
+                        <li>Mise en situation tactique : Engagement en combat, suivi des ordres.</li>
+                        <li>Test de communication : Transmission d'informations en mission.</li>
+                        <li>Prise d'initiative : Réaction en cas d'imprévu sur le terrain.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 3 : Seconde Évaluation</h4>
+                    <ul>
+                        <li>Gestion des responsabilités : Commandement temporaire d'une escouade.</li>
+                        <li>Évaluation du leadership : Capacité à aider et motiver ses camarades.</li>
+                    </ul>
+                </div>
+                
+                <div class="validation">
+                    Validation : Si toutes les compétences sont validées, passage à Caporal.
+                </div>
+            </div>
+            
+            <!-- Caporal à Sergent -->
+            <div class="rank-content" data-content="2">
+                <div class="evaluators">
+                    Évaluateurs : Sergent-Chef + Lieutenant
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 1 : Observation Générale (3 semaines minimum)</h4>
+                    <ul>
+                        <li>Gestion des soldats sous sa responsabilité.</li>
+                        <li>Assiduité et implication dans l'encadrement.</li>
+                        <li>Application des consignes tactiques avancées.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 2 : Première Évaluation</h4>
+                    <ul>
+                        <li>Prise en charge d'une escouade sur une mission complète.</li>
+                        <li>Test de commandement : Donner des ordres clairs et concis.</li>
+                        <li>Réactivité en mission : Adapter sa stratégie aux imprévus.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 3 : Seconde Évaluation</h4>
+                    <ul>
+                        <li>Mise en situation complexe : Attaque coordonnée ou défense.</li>
+                        <li>Capacité de formation : Aider les soldats à progresser.</li>
+                        <li>Capacité d'adaptation sous pression.</li>
+                    </ul>
+                </div>
+                
+                <div class="validation">
+                    Validation : Si réussi, passage à Sergent.
+                </div>
+            </div>
+            
+            <!-- Sergent à Sergent-Chef -->
+            <div class="rank-content" data-content="3">
+                <div class="evaluators">
+                    Évaluateurs : Lieutenant + Capitaine
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 1 : Observation Générale (4 semaines minimum)</h4>
+                    <ul>
+                        <li>Expérience et gestion d'escouades.</li>
+                        <li>Prise d'initiative et autonomie.</li>
+                        <li>Maîtrise des stratégies avancées.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 2 : Première Évaluation</h4>
+                    <ul>
+                        <li>Commandement d'un groupe de 2 escouades.</li>
+                        <li>Coordination avec les autres unités en mission.</li>
+                        <li>Capacité à gérer les imprévus.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 3 : Seconde Évaluation</h4>
+                    <ul>
+                        <li>Organisation d'un exercice tactique.</li>
+                        <li>Capacité à analyser une mission et en tirer des leçons.</li>
+                    </ul>
+                </div>
+                
+                <div class="validation">
+                    Validation : Si réussi, passage à Sergent-Chef.
+                </div>
+            </div>
+            
+            <!-- Sergent-Chef à Lieutenant -->
+            <div class="rank-content" data-content="4">
+                <div class="evaluators">
+                    Évaluateurs : Capitaine + Commandant
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 1 : Observation Générale (5 semaines minimum)</h4>
+                    <ul>
+                        <li>Supervision de plusieurs escouades.</li>
+                        <li>Gestion et planification de missions.</li>
+                        <li>Aptitude à la prise de décisions stratégiques.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 2 : Première Évaluation</h4>
+                    <ul>
+                        <li>Organisation complète d'une opération militaire.</li>
+                        <li>Gestion de la communication avec l'État-Major.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 3 : Seconde Évaluation</h4>
+                    <ul>
+                        <li>Mise en situation de crise (scénario surprise).</li>
+                        <li>Gestion d'une escouade en PVP structuré.</li>
+                    </ul>
+                </div>
+                
+                <div class="validation">
+                    Validation : Si réussi, passage à Lieutenant.
+                </div>
+            </div>
+            
+            <!-- Lieutenant à Capitaine -->
+            <div class="rank-content" data-content="5">
+                <div class="evaluators">
+                    Évaluateurs : Commandant + État-Major
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 1 : Observation Générale (6 semaines minimum)</h4>
+                    <ul>
+                        <li>Gestion d'une compagnie entière.</li>
+                        <li>Coordination inter-unités.</li>
+                        <li>Planification stratégique à long terme.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 2 : Première Évaluation</h4>
+                    <ul>
+                        <li>Supervision d'un exercice de grande ampleur.</li>
+                        <li>Prise de décision rapide en situation de combat avancé.</li>
+                    </ul>
+                </div>
+                
+                <div class="phase">
+                    <h4>Phase 3 : Seconde Évaluation</h4>
+                    <ul>
+                        <li>Gestion d'une campagne complète sur plusieurs missions.</li>
+                        <li>Débriefing et analyse des opérations avec l'État-Major.</li>
+                    </ul>
+                </div>
+                
+                <div class="validation">
+                    Validation : Si réussi, passage à Capitaine.
+                </div>
+            </div>
+        </div>
+        
+        <section class="summary">
+            <h3>Récapitulatif des Étapes Clés</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <strong>1. Soldat → Caporal</strong>
+                    Leadership et prise d'initiative.
+                </div>
+                <div class="summary-item">
+                    <strong>2. Caporal → Sergent</strong>
+                    Commandement d'escouade et gestion tactique.
+                </div>
+                <div class="summary-item">
+                    <strong>3. Sergent → Sergent-Chef</strong>
+                    Coordination et analyse stratégique.
+                </div>
+                <div class="summary-item">
+                    <strong>4. Sergent-Chef → Lieutenant</strong>
+                    Planification avancée et supervision.
+                </div>
+                <div class="summary-item">
+                    <strong>5. Lieutenant → Capitaine</strong>
+                    Commandement de compagnie et vision stratégique.
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>Les promotions sont annoncées officiellement et validées par la hiérarchie concernée.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab navigation
+        document.querySelectorAll('.rank-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Get the tab number
+                const tabNumber = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and add to current
+                document.querySelectorAll('.rank-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Hide all content and show current
+                document.querySelectorAll('.rank-content').forEach(c => c.classList.remove('active'));
+                document.querySelector(`.rank-content[data-content="${tabNumber}"]`).classList.add('active');
+                
+                // Update progress indicator
+                document.querySelectorAll('.progress-step').forEach(step => {
+                    step.classList.remove('active', 'pulse');
+                });
+                document.querySelector(`.progress-step[data-step="${tabNumber}"]`).classList.add('active', 'pulse');
+            });
+        });
+        
+        // Initialize the first tab as active
+        document.querySelector('.rank-tab[data-tab="1"]').classList.add('active');
+        document.querySelector('.rank-content[data-content="1"]').classList.add('active');
+        document.querySelector('.progress-step[data-step="1"]').classList.add('active', 'pulse');
+        
+        // Add hover effect to summary items
+        document.querySelectorAll('.summary-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
