@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communauté Arma Reforger</title>
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #d4af37;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Conteneur principal */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar pour desktop */
+        .sidebar {
+            width: 250px;
+            background: #222;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ffcc00;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #d4af37;
+            background: #333;
+            padding: 12px;
+            display: block;
+            border-radius: 8px;
+            text-align: center;
+            transition: 0.3s;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .sidebar ul li a:hover {
+            background: #555;
+            color: #ffcc00;
+        }
+
+        /* Bouton hamburger (caché par défaut sur desktop) */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background-color: #333;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        /* Zone de contenu */
+        .content {
+            margin-left: 290px;
+            padding: 30px;
+            width: calc(100% - 290px);
+            transition: margin 0.3s ease-in-out, width 0.3s ease-in-out;
+        }
+
+        .page {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Titres et texte */
+        h1 {
+            text-transform: uppercase;
+            border-bottom: 3px solid #d4af37;
+            padding-bottom: 10px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        /* Éléments spécifiques */
+        .step {
+            background: #333;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px solid #d4af37;
+            box-shadow: 3px 3px 10px rgba(212, 175, 55, 0.5);
+            text-align: left;
+        }
+
+        .step h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        .step p,
+        .step ul {
+            font-size: 1.1em;
+        }
+
+        .highlight {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        /* Styles Organigramme */
+        .box {
+            background: #333;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #d4af37;
+        }
+
+        .line {
+            width: 2px;
+            height: 20px;
+            background-color: #d4af37;
+            margin: 0 auto;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        /* Styles responsive */
+        @media screen and (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 80%;
+                max-width: 300px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .content.sidebar-active {
+                filter: blur(2px);
+                pointer-events: none;
+            }
+
+            /* Overlay quand le menu est actif sur mobile */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                z-index: 999;
+            }
+
+            .overlay.active {
+                display: block;
+            }
+        }
+
+        /* Ajustements supplémentaires pour mobile */
+        @media screen and (max-width: 768px) {
+            .box {
+                width: 100% !important;
+                margin: 10px 0;
+            }
+
+            /* Adaptation de l'organigramme pour mobile */
+            .company-container {
+                width: 100% !important;
+                margin-bottom: 20px;
+            }
+
+            .squads-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Overlay pour mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Bouton hamburger -->
+    <button class="hamburger" id="hamburger">☰</button>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <h2>📌 Menu</h2>
+            <ul>
+                <li><a onclick="showPage('accueil')">Accueil</a></li>
+                <li><a onclick="showPage('demarrage')">Démarrage de la Communauté</a></li>
+                <li><a onclick="showPage('carriere')">La Carrière d'un Soldat</a></li>
+                <li><a onclick="showPage('organigramme')">Organigramme</a></li>
+                <li><a onclick="showPage('roles')">Rôles Hors Gameplay</a></li>
+                <li><a onclick="showPage('discord')">Structure Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Page d'accueil -->
+            <div id="accueil" class="page active">
+                <h1>Bienvenue sur le Projet de Communauté</h1>
+                <p>
+                    Ce projet vise à créer une communauté immersive et organisée autour du jeu Arma Reforger.
+                    Notre structure est basée sur une hiérarchie militaire, avec des rôles précis et des objectifs
+                    clairs.
+                    Nous avons un système évolutif permettant aux joueurs d'évoluer dans les grades et de prendre part à
+                    la gestion de la communauté.
+                </p>
+                <p>
+                    Notre serveur fonctionne en <b>PVE permanent</b> avec des objectifs dynamiques, ainsi que des phases
+                    <b>PVP organisées</b> le week-end.
+                    L'intégration des nouveaux joueurs est encadrée par un système de recrutement sélectif, garantissant
+                    une expérience de jeu cohérente et immersive.
+                </p>
+                <p>
+                    Utilisez le menu pour explorer les différentes sections et en apprendre plus sur l'organisation de
+                    la communauté.
+                </p>
+            </div>
+
+            <!-- Démarrage de la Communauté -->
+            <div id="demarrage" class="page">
+                <h1>📌 Démarrage de la Communauté</h1>
+
+                <div class="step">
+                    <h2>🛠️ Étape 1 : Création des Fondations</h2>
+                    <ul>
+                        <li>✅ Mise en place du <span class="highlight">Discord</span> et du serveur.</li>
+                        <li>✅ Rédaction du <span class="highlight">règlement</span> et des objectifs.</li>
+                        <li>✅ Définition des <span class="highlight">rôles temporaires</span> pour les fondateurs.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>📝 Étape 2 : Recrutement Progressif</h2>
+                    <ul>
+                        <li>👤 <span class="highlight">Phase 1</span> (1-10 joueurs) → Une seule compagnie, structure
+                            flexible.</li>
+                        <li>👥 <span class="highlight">Phase 2</span> (10-30 joueurs) → Début des escouades, premiers
+                            leaders.</li>
+                        <li>🏅 <span class="highlight">Phase 3</span> (30+ joueurs) → Transition vers la structure
+                            finale (2 compagnies).</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>⚔️ Étape 3 : Gestion du Serveur PVE</h2>
+                    <ul>
+                        <li>🎯 <span class="highlight">Départ :</span> Missions libres, pas d'officiers attitrés.</li>
+                        <li>📋 <span class="highlight">10-20 joueurs :</span> Un chef temporaire par session.</li>
+                        <li>🏅 <span class="highlight">20+ joueurs :</span> Escouades fixes et premiers officiers.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>📈 Étape 4 : Passage au Modèle Final</h2>
+                    <ul>
+                        <li>✅ <span class="highlight">État-Major</span> actif dès qu'un nombre suffisant d'officiers est
+                            présent.</li>
+                        <li>✅ <span class="highlight">Mise en place des compagnies</span> dès 30+ joueurs.</li>
+                        <li>✅ <span class="highlight">Système de progression</span> basé sur l'engagement et le
+                            leadership.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🎖️ Gestion des Premiers Grades et Évolutions</h2>
+                    <p>Les premiers grades sont attribués dès que la communauté atteint <span class="highlight">10 à 15
+                            joueurs actifs</span>. Ils permettent d'assurer une montée en puissance progressive.</p>
+                    <ul>
+                        <li>🆕 <b>Caporal</b> → Joueur confirmé, aide les recrues.</li>
+                        <li>🎖 <b>Sergent</b> → Leader d'une escouade (1 pour 8-10 joueurs).</li>
+                        <li>🏅 <b>Lieutenant</b> → Responsable de plusieurs escouades.</li>
+                    </ul>
+                    <p>Un joueur actif et investi peut évoluer de <span class="highlight">Recrue à Sergent en 4-6
+                            semaines</span>, et à Lieutenant après plusieurs mois d'expérience.</p>
+                </div>
+
+                <h2>📜 Récapitulatif</h2>
+                <p>
+                    Nous partons d'un groupe réduit et structurons progressivement la communauté.
+                    Grâce à un recrutement progressif et une organisation adaptable, nous assurons une transition fluide
+                    vers un modèle à 300 joueurs.
+                </p>
+            </div>
+
+
+            <!-- La carrière d'un soldat -->
+            <div id="carriere" class="page">
+                <h1>📌 La Vie d'un Soldat</h1>
+
+
+                <div class="step">
+                    <h2>🎖️ Recrue (50 joueurs dans le Vivier de Recrues)</h2>
+                    <ul>
+                        <li>Assimiler les règles et les bonnes pratiques du serveur.</li>
+                        <li>Suivre une période de formation initiale.</li>
+                        <li>Participer à des exercices et entraînements supervisés.</li>
+                        <li>Observer les missions et s'impliquer progressivement.</li>
+                        <li>Faire preuve de discipline et d'engagement.</li>
+                        <li>✅ Première évaluation : validation des compétences de base.</li>
+                        <li>🎯 Accès à une escouade en tant que Soldat.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🎖️ Soldat (120 joueurs - 15 par escouade, 8 escouades par compagnie)</h2>
+                    <ul>
+                        <li>Approfondir les tactiques avancées et les stratégies de combat.</li>
+                        <li>Participer activement aux entraînements et missions PVE.</li>
+                        <li>Première évaluation après deux semaines pour valider les compétences acquises.</li>
+                        <li>🎯 Choix d'une spécialité : Fusilier, Soutien, Medic, etc.</li>
+                        <li>Développer son engagement et son esprit d'équipe.</li>
+                        <li>✅ Seconde évaluation : gestion des responsabilités et interaction avec l'escouade.</li>
+                        <li>📢 Possibilité de promotion vers Caporal.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🔹 Caporal (32 joueurs - 4 par escouade, 8 escouades par compagnie)</h2>
+                    <ul>
+                        <li>Première évaluation : capacité à encadrer des Soldats.</li>
+                        <li>Assurer la formation et le suivi des nouvelles recrues.</li>
+                        <li>Organiser et guider les entraînements.</li>
+                        <li>✅ Seconde évaluation : validation du leadership et de la gestion d'escouade.</li>
+                        <li>🎯 Encadrement des Soldats en tant que mentor.</li>
+                        <li>📢 Possibilité de promotion vers Sergent.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🔹 Sergent (16 joueurs - 2 par escouade, 8 escouades par compagnie)</h2>
+                    <ul>
+                        <li>Première évaluation : coordination et gestion des Caporaux.</li>
+                        <li>Appliquer les plans de mission définis par le Sergent-Chef.</li>
+                        <li>Suivi des performances des Soldats et Caporaux.</li>
+                        <li>✅ Seconde évaluation : capacité à planifier et gérer des opérations en autonomie.</li>
+                        <li>🎯 Gestion tactique des escouades.</li>
+                        <li>📢 Possibilité de promotion vers Sergent-Chef.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🔹 Sergent-Chef (8 joueurs - 1 par escouade, 8 escouades par compagnie)</h2>
+                    <ul>
+                        <li>Première évaluation : gestion et organisation d'une escouade entière.</li>
+                        <li>Planifier les missions et assigner les rôles aux Sergents.</li>
+                        <li>✅ Seconde évaluation : gestion des responsabilités multiples.</li>
+                        <li>🎯 Coordination entre les escouades.</li>
+                        <li>📢 Possibilité de promotion vers Lieutenant.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🔹 Lieutenant (8 joueurs - 1 par escouade, 8 escouades par compagnie)</h2>
+                    <ul>
+                        <li>Première évaluation : gestion des effectifs et des ressources.</li>
+                        <li>Planification des batailles et supervision des escouades.</li>
+                        <li>✅ Seconde évaluation : gestion inter-escouades.</li>
+                        <li>🎯 Collaboration avec les Capitaines.</li>
+                        <li>📢 Possibilité de promotion vers Capitaine.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🔹 Capitaine (4 joueurs - 2 par compagnie)</h2>
+                    <ul>
+                        <li>Première évaluation : supervision des escouades et gestion des opérations majeures.</li>
+                        <li>Organisation des compagnies et coordination des effectifs.</li>
+                        <li>✅ Seconde évaluation : évaluation des capacités stratégiques et logistiques.</li>
+                        <li>🎯 Planification des grandes opérations et prise de décision.</li>
+                        <li>📢 Possibilité de promotion vers Commandant.</li>
+                    </ul>
+                </div>
+
+                <h2>📜 Fonctionnement de la Progression</h2>
+                <p>
+                    Chaque joueur commence en tant que <span class="highlight">recrue</span> et évolue selon son
+                    engagement, ses compétences et son leadership.
+                    Les promotions sont attribuées par l'État-Major en fonction des performances et du mérite.
+                    Les joueurs peuvent également se spécialiser dans des rôles de soutien tels que la logistique ou
+                    l'instruction.
+                </p>
+            </div>
+
+
+            <!-- Organigramme -->
+            <div id="organigramme" class="page">
+                <h1>📌 Organigramme Discord</h1>
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; max-width: 900px; margin: 0 auto;">
+                    <div class="box" style="width: 60%; text-align: center;">👑 Fondateurs (4 joueurs)</div>
+                    <div class="line"></div>
+                    <div class="box" style="width: 80%; text-align: center;">🛡️ État-Major Général (10 joueurs : 1
+                        Commandant Suprême, 2 Adjoints, 3 Officiers Stratégiques, 4 Officiers Logistique)</div>
+                    <div class="line"></div>
+
+                    <div style="display: flex; justify-content: center; width: 100%; gap: 30px; flex-wrap: wrap;">
+                        <!-- Compagnie A - Conteneur -->
+                        <div class="company-container"
+                            style="width: 45%; display: flex; flex-direction: column; align-items: center;">
+                            <!-- Titre de la compagnie -->
+                            <div class="box"
+                                style="background-color: #3a3a00; width: 100%; text-align: center; margin-bottom: 20px;">
+                                <span style="font-size: 1.2em;">🏅 Compagnie A</span><br>
+                                (1 Commandant, 2 Capitaines)
+                            </div>
+
+                            <!-- Escouades de la Compagnie A -->
+                            <div class="squads-grid"
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;">
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Alpha<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Bravo<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Charlie<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Delta<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                            </div>
+
+                            <!-- Vivier de Recrues Compagnie A -->
+                            <div class="box" style="width: 100%; text-align: center; margin-top: 20px;">
+                                ⚔️ Vivier de Recrues Compagnie A<br>
+                                (25 Joueurs - en évaluation)
+                            </div>
+                        </div>
+
+                        <!-- Compagnie B - Conteneur -->
+                        <div class="company-container"
+                            style="width: 45%; display: flex; flex-direction: column; align-items: center;">
+                            <!-- Titre de la compagnie -->
+                            <div class="box"
+                                style="background-color: #003a3a; width: 100%; text-align: center; margin-bottom: 20px;">
+                                <span style="font-size: 1.2em;">🏅 Compagnie B</span><br>
+                                (1 Commandant, 2 Capitaines)
+                            </div>
+
+                            <!-- Escouades de la Compagnie B -->
+                            <div class="squads-grid"
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;">
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Echo<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Foxtrot<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Golf<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                                <div class="box" style="background-color: #333; text-align: center;">
+                                    ⚔️ Escouade Hotel<br>
+                                    (1 Lieutenant, 1 Sergent-Chef, 2 Sergents, 4 Caporals, 15 Soldats)
+                                </div>
+                            </div>
+
+                            <!-- Vivier de Recrues Compagnie B -->
+                            <div class="box" style="width: 100%; text-align: center; margin-top: 20px;">
+                                ⚔️ Vivier de Recrues Compagnie B<br>
+                                (25 Joueurs - en évaluation)
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>📜 Fonctionnement de l'Organigramme</h2>
+                    <p>
+                        Cet organigramme représente la hiérarchie du serveur Discord et l'organisation des compagnies.
+                        L'État-Major Général supervise l'ensemble des opérations et assure la coordination entre les
+                        compagnies A et B.
+                        Chaque compagnie est dirigée par un Commandant assisté de Capitaines et comprend 4 escouades.
+                        Chaque escouade est dirigée par un Lieutenant, assisté d'un Sergent-Chef, 2 Sergents et 4
+                        Caporaux, encadrant 15 Soldats.
+                        Un vivier de recrues permet de former et d'intégrer progressivement de nouveaux joueurs dans les
+                        compagnies.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rôles hors gameplay -->
+            <div id="roles" class="page">
+                <h1>📌 Rôles Hors Gameplay</h1>
+
+                <div class="step">
+                    <h2>🎖️ Chef d'Escouade (Sergent-Chef - SC)</h2>
+                    <ul>
+                        <li>✅ <span class="highlight">Gestion de son escouade</span> → Maintenir la cohésion et la
+                            motivation.</li>
+                        <li>✅ <span class="highlight">Briefing & Débriefing</span> → Assurer un suivi après chaque
+                            mission.</li>
+                        <li>✅ <span class="highlight">Formation et intégration</span> → Accompagner les nouvelles
+                            recrues.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🏅 Officier d'Escouade (Lieutenant)</h2>
+                    <ul>
+                        <li>✅ <span class="highlight">Planification des opérations</span> → Préparer les missions avec
+                            le Capitaine.</li>
+                        <li>✅ <span class="highlight">Encadrement du Sergent-Chef</span> → S'assurer de la bonne gestion
+                            de l'escouade.</li>
+                        <li>✅ <span class="highlight">Gestion des conflits internes</span> → Maintenir une bonne
+                            dynamique.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🏅 Capitaine de Compagnie</h2>
+                    <ul>
+                        <li>✅ <span class="highlight">Définition des stratégies</span> → Fixer les objectifs avec le
+                            Commandant.</li>
+                        <li>✅ <span class="highlight">Supervision des Lieutenants</span> → Suivi des officiers et
+                            escouades.</li>
+                        <li>✅ <span class="highlight">Communication avec l'EMG</span> → Remonter les besoins et
+                            décisions.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🏅 Commandant de Compagnie</h2>
+                    <ul>
+                        <li>✅ <span class="highlight">Orientation stratégique</span> → Diriger sa compagnie selon les
+                            objectifs fixés.</li>
+                        <li>✅ <span class="highlight">Encadrement des Capitaines</span> → Assurer la coordination entre
+                            les escouades.</li>
+                        <li>✅ <span class="highlight">Liaison avec l'État-Major</span> → Reporting et suivi des
+                            directives.</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h2>🏛 État-Major Général (EMG)</h2>
+                    <ul>
+                        <li>✅ <span class="highlight">Définition de la vision globale</span> → Élaboration de la
+                            stratégie.</li>
+                        <li>✅ <span class="highlight">Organisation des événements</span> → Planification des campagnes
+                            et PVP.</li>
+                        <li>✅ <span class="highlight">Suivi des effectifs et discipline</span> → Assurer une cohésion
+                            interne.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Structure discord -->
+            <div id="discord" class="page">
+                <h1>📌 Structure du Discord</h1>
+
+                <h2>🔹 Zone Fondatrice</h2>
+                <ul>
+                    <li>📜 Règlement & Informations (Texte)</li>
+                    <li>📢 Annonces Officielles (Texte)</li>
+                    <li>🎤 Salon des Fondateurs (Vocal, privé)</li>
+                </ul>
+
+                <h2>🔹 Administration & Modération</h2>
+                <ul>
+                    <li>🔧 Panel Admin (Texte)</li>
+                    <li>🛠️ Modération (Texte)</li>
+                    <li>📩 Support & Tickets (Texte)</li>
+                    <li>🚨 Sanctions & Rapports (Texte)</li>
+                </ul>
+
+                <h2>🔹 Zone Communautaire</h2>
+                <ul>
+                    <li>💬 Discussions Générales (Texte)</li>
+                    <li>📷 Partage de Médias (Texte)</li>
+                    <li>🎮 Autres Jeux (Texte)</li>
+                    <li>🎙️ Salons Vocaux Publics (Vocal)</li>
+                </ul>
+
+                <h2>⚔️ Compagnie Alpha</h2>
+                <ul>
+                    <li>🏅 Commandement Alpha (Texte)</li>
+                    <li>📢 Annonces Compagnie Alpha (Texte)</li>
+                    <li>📈 Stratégie & Opérations Alpha (Texte)</li>
+                    <li>🗓️ Calendrier Alpha (Texte)</li>
+                    <li>🛡️ Escouades</li>
+                    <ul>
+                        <li>⚔️ Escouade Alpha 1 (Texte & Vocal)</li>
+                        <li>⚔️ Escouade Alpha 2 (Texte & Vocal)</li>
+                        <li>⚔️ Escouade Alpha 3 (Texte & Vocal)</li>
+                        <li>⚔️ Escouade Alpha 4 (Texte & Vocal)</li>
+                    </ul>
+                </ul>
+
+                <h2>⚔️ Compagnie Bravo</h2>
+                <ul>
+                    <li>🏅 Commandement Bravo (Texte)</li>
+                    <li>📢 Annonces Compagnie Bravo (Texte)</li>
+                    <li>📈 Stratégie & Opérations Bravo (Texte)</li>
+                    <li>🗓️ Calendrier Bravo (Texte)</li>
+                    <li>🛡️ Escouades</li>
+                    <ul>
+                        <li>⚔️ Escouade Bravo 1 (Texte & Vocal)</li>
+                        <li>⚔️ Escouade Bravo 2 (Texte & Vocal)</li>
+                        <li>⚔️ Escouade Bravo 3 (Texte & Vocal)</li>
+                        <li>⚔️ Escouade Bravo 4 (Texte & Vocal)</li>
+                    </ul>
+                </ul>
+
+                <h2>🔹 Zone PVE & PVP</h2>
+                <ul>
+                    <li>🗺️ Planification PVE (Texte)</li>
+                    <li>⚔️ Planification PVP (Texte)</li>
+                    <li>🎙️ Salons Vocaux de Combat (Vocal)</li>
+                </ul>
+
+                <h2>🔹 Recrutement & Intégration</h2>
+                <ul>
+                    <li>📢 Présentations & Bienvenue (Texte)</li>
+                    <li>📝 Candidatures (Texte)</li>
+                    <li>🎓 Formation & Évaluation (Texte)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour afficher une page spécifique
+        function showPage(pageId) {
+            // Cacher toutes les pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Afficher la page demandée
+            document.getElementById(pageId).classList.add('active');
+
+            // Fermer la sidebar immédiatement sur mobile
+            if (window.innerWidth <= 992) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                content.classList.remove('sidebar-active');
+            }
+        }
+
+        // Sélection des éléments du DOM
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+        const overlay = document.getElementById('overlay');
+        const menuLinks = document.querySelectorAll('.sidebar ul li a');
+
+        // Fonction pour fermer le menu latéral
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            content.classList.remove('sidebar-active');
+        }
+
+        // Fonction pour ouvrir le menu latéral
+        function openSidebar() {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            content.classList.add('sidebar-active');
+        }
+
+        // Fonction pour basculer l'état du menu
+        function toggleSidebar() {
+            if (sidebar.classList.contains('active')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        // Fonction pour afficher une page spécifique
+        function showPage(pageId) {
+            // Cacher toutes les pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Afficher la page demandée
+            document.getElementById(pageId).classList.add('active');
+
+            // Fermer explicitement la sidebar
+            closeSidebar();
+        }
+
+        // Écouteurs d'événements
+        hamburger.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // Ajouter des écouteurs à chaque lien du menu
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                // Le code de showPage est appelé via l'attribut onclick
+                // Aucun traitement supplémentaire n'est nécessaire ici
+            });
+        });
+
+        // Gérer le redimensionnement de la fenêtre
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 992) {
+                closeSidebar();
+            }
+        });
+
+        // Gérer le redimensionnement de la fenêtre
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 992) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                content.classList.remove('sidebar-active');
+            }
+        });
+    </script>
+</body>
+
+</html>
